@@ -19,7 +19,7 @@ let PatientSchema = new Schema({
     pat_phone_work: { type: Number, required: false, maxlength: 10 },
     pat_gender: { type: String, required: true, maxlength: 7 },
     pat_marital_status: { type: String, required: false, maxlength: 8 },
-    pat_birth_date: { type: Date, required: true, maxlength: 10 },
+    pat_birthDate: { type: Date, required: true, maxlength: 10 },
     pat_age: { type: Number, required: false, maxlength: 3 },
     pat_ssn: { type: Number, required: false, maxlength: 9 },
     pat_referred_by: { type: String, required: false, maxlength: 150 },
