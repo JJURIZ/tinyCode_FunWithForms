@@ -39,7 +39,6 @@ router.get('/patient', patient_controller.patient_list);
 // INSURANCE ROUTES //
 
 // GET Insurance list.
-router.get('/', patient_controller.index);
 
 //GET request for creating a Insurance. NOTE This must come before routes that display Insurance (uses id).
 router.get('/insurance/create', insurance_controller.insurance_create_get);
@@ -69,7 +68,6 @@ router.get('/insurance', insurance_controller.insurance_list);
 // EMPLOYER ROUTES //
 
 // GET Employer list.
-//router.get('/', employer_controller.index);
 
 //GET request for creating a Employer. NOTE This must come before routes that display Patients (uses id).
 router.get('/employer/create', employer_controller.employer_create_get);

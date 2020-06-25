@@ -1,11 +1,41 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<%- include partials/header %>
+
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">
+                    <ul class="sidebar-nav">
+                        <li><a href="/catalog">Home</a></li>
+                        <li><a href="/catalog/patients">All Patients</a></li>
+                        <li><a href="/catalog/insurance">All Insurance Companies</a></li>
+                        <li><a href="/catalog/employers">All Employers</a></li>
+
+                        <hr>
+
+                        <li> <a href="/catalog/patient/create">Create new Patient</a></li>
+                        <li> <a href="/catalog/insurance/create">Create new Insurance</a></li>
+                        <li> <a href="/catalog/employer/create">Create new Employer</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-10">
+                    <h1>Patient Intake Welcome Screen</h1>
+                    <p>Welcome to <em>Patient Intake</em>, a sample project created by Jeremy Uriz (with much assistance from the MDN network).</p>
+                    <h1>Dynamic content</h1>
+                    <p>The library has the following record counts:</p>
+                    <ul>
+                        <li><strong>Patients:</strong>
+
+                        </li>
+                        <li><strong>Insurance Companies:</strong>
+
+                        </li>
+                        <li><strong>Employers:</strong>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <%- include partials/footer %>
