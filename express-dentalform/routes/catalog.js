@@ -1,11 +1,10 @@
-let express = require('require');
-let router = express.Router();
+var express = require('express');
+var router = express.Router();
 
 //Require controller modules.
-let patient_controller = require('../controllers/patientController');
-let insurance_controller = require('../controllers/insuranceController');
-let employer_controller = require('../controllers/employerController');
-const patient = require('../models/patient');
+var patient_controller = require('../controllers/patientController');
+var insurance_controller = require('../controllers/insuranceController');
+var employer_controller = require('../controllers/employerController');
 
 // PATIENT ROUTES //
 
@@ -70,7 +69,7 @@ router.get('/insurance', insurance_controller.insurance_list);
 // EMPLOYER ROUTES //
 
 // GET Employer list.
-router.get('/', employer_controller.index);
+//router.get('/', employer_controller.index);
 
 //GET request for creating a Employer. NOTE This must come before routes that display Patients (uses id).
 router.get('/employer/create', employer_controller.employer_create_get);

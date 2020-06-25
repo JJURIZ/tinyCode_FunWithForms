@@ -1,5 +1,9 @@
 let Patient = require('../models/patient');
 
+exports.index = function(req, res) {
+    res.send('NOT IMPLEMENTED: Site Home Page');
+};
+
 //Display list of all patients.
 exports.patient_list = function(req, res) {
     res.send('NOT IMPLEMENTED: Patient List');
