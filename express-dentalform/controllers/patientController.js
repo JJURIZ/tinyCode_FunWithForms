@@ -7,24 +7,24 @@ let async = require('async');
 exports.index = function(req, res) {
 
     async.parallel({
-        patient_count: function(callback) {
-            Patient.countDocuments({}, callback)
-        },
-        insurance_count: function(callback) {
-            Insurance.countDocuments({}, callback);
-        },
-        employer_count: function(callback) {
-            Employer.countDocuments({}, callback);
+            patient_count: function(callback) {
+                Patient.countDocuments({}, callback);
+            },
+            insurance_count: function(callback) {
+                Insurance.countDocuments({}, callback);
+            },
+            employer_count: function(callback) {
+                Employer.countDocuments({}, callback);
+            },
         },
         function(err, results) {
             res.render('index', { title: 'Patient Intake Form Home', error: err, data: results })
-        }
-    });
+        });
 };
 
 //Display list of all patients.
 exports.patient_list = function(req, res, next) {
-    Patient.find({}, 'pat_firstName, pat_lastName')
+    Patient.find({}, 'pat_firstName,')
         .populate('patient')
         .sort([
             ['pat_firstName', 'ascending']
