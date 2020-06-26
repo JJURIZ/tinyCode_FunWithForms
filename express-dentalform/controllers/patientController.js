@@ -3,7 +3,6 @@ let Insurance = require('../models/insurance');
 let Employer = require('../models/employer');
 
 let async = require('async');
-const insurance = require('../models/insurance');
 
 exports.index = function(req, res) {
 
@@ -24,8 +23,17 @@ exports.index = function(req, res) {
 };
 
 //Display list of all patients.
-exports.patient_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient List');
+exports.patient_list = function(req, res, next) {
+    Patient.find({}, 'pat_firstName, pat_lastName')
+        .populate('patient')
+        .sort([
+            ['pat_firstName', 'ascending']
+        ])
+        .exec(function(err, list_patients) {
+            if (err) { return next(err); }
+            //Successful, so render
+            res.send('patient_list', { title: 'Patient List', patient_list: list_patients });
+        });
 };
 
 //Display detail page for a specific Patient. 
