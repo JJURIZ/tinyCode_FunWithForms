@@ -2,7 +2,16 @@ let Employer = require('../models/employer');
 
 //Display list of all patients.
 exports.employer_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: Employer List');
+
+    Employer.find()
+        .populate('employer')
+        .sort([
+            ['employer_name', 'ascending']
+        ])
+        .exec(function(err, list_employers) {
+            if (err) { return next(err); }
+            res.render('employer_list', { title: 'Employers', employer_list: list_employers });
+        });
 };
 
 //Display detail page for a specific Patient. 

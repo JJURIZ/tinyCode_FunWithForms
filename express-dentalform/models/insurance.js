@@ -11,6 +11,14 @@ var InsuranceSchema = new Schema({
     ins_co_zip: { type: String, required: true, maxlength: 5 }
 });
 
+
+//Virtual for insurance's URL
+InsuranceSchema
+    .virtual('url')
+    .get(function() {
+        return '/catalog/insurance/' + this._id;
+    });
+
 //Export model
 
 module.exports = mongoose.model('Insurance', InsuranceSchema);

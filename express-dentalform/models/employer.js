@@ -11,6 +11,14 @@ let EmployerSchema = new Schema({
     employer_zip: { type: String, required: true, maxlength: 5 },
 });
 
+
+//Virtual for employer's URL
+EmployerSchema
+    .virtual('url')
+    .get(function() {
+        return '/catalog/employer/' + this._id;
+    });
+
 //Export model
 
 module.exports = mongoose.model('Employer', EmployerSchema);

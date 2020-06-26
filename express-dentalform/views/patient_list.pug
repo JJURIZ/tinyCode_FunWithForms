@@ -8,6 +8,7 @@ block content
     each patient in patient_list
       li
         a(href=patient.url) #{patient.pat_lastName}, #{patient.pat_firstName}
-        |  
+        |  DOB #{patient.pat_birthDate_formatted} 
+        |  (#{patient.pat_city})
     else
       li There are no patients. 

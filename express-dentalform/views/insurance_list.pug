@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each insurance in insurance_list
+      li
+        a(href=insurance.url) #{insurance.ins_co_name}
+    
+    else
+      li There are no insurance companies. 

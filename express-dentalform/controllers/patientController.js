@@ -25,7 +25,7 @@ exports.index = function(req, res) {
 //Display list of all patients.
 exports.patient_list = function(req, res, next) {
 
-    Patient.find({}, 'pat_lastName pat_firstName')
+    Patient.find({}, 'pat_lastName pat_firstName pat_birthDate pat_city')
         .populate('patient').exec(function(err, list_patients) {
             if (err) { return next(err) } else {
                 //Successful, so render

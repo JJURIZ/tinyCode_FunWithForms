@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+let moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -50,6 +51,12 @@ PatientSchema
     .virtual('url')
     .get(function() {
         return '/catalog/patient/' + this._id;
+    });
+
+PatientSchema
+    .virtual('pat_birthDate_formatted')
+    .get(function() {
+        return moment(this.pat_birthDate).format('MMMM Do, YYYY');
     });
 
 //Export model
