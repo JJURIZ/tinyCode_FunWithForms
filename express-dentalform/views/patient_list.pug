@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    - patient_list.sort(function(a, b) {let textA = a.pat_lastName.toUpperCase(); let textB = b.pat_lastName.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+    each patient in patient_list
+      li
+        a(href=patient.url) #{patient.pat_lastName}, #{patient.pat_firstName}
+        |  
+    else
+      li There are no patients. 

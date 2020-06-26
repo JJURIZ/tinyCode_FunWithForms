@@ -24,15 +24,13 @@ exports.index = function(req, res) {
 
 //Display list of all patients.
 exports.patient_list = function(req, res, next) {
-    Patient.find({}, 'pat_firstName,')
-        .populate('patient')
-        .sort([
-            ['pat_firstName', 'ascending']
-        ])
-        .exec(function(err, list_patients) {
-            if (err) { return next(err); }
-            //Successful, so render
-            res.send('patient_list', { title: 'Patient List', patient_list: list_patients });
+
+    Patient.find({}, 'pat_lastName pat_firstName')
+        .populate('patient').exec(function(err, list_patients) {
+            if (err) { return next(err) } else {
+                //Successful, so render
+                res.render('patient_list', { title: 'Patient List', patient_list: list_patients });
+            }
         });
 };
 
