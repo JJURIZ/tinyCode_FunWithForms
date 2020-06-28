@@ -40,20 +40,21 @@ exports.patient_detail = function(req, res, next) {
     let id = mongoose.Types.ObjectId(req.params.id);
     async.parallel({
         patient: function(callback) {
+
             Patient.findById(id)
+                .populate('patient')
                 .populate('insurance')
                 .populate('employer')
                 .exec(callback);
         },
-        function(err, results) {
-            if (err) { return next(err); }
-            if (results.patient == null) {
-                let err = new Error('Patient not found');
-                err.status = 404;
-                return next(err);
-            }
-            res.render('patient_detail', { title: 'Patient Details' });
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.patient == null) {
+            let err = new Error('Patient not found');
+            err.status = 404;
+            return next(err);
         }
+        res.render('patient_detail', { title: 'Patient Details', patient: results.patient });
     });
 };
 

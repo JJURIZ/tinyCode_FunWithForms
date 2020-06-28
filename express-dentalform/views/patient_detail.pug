@@ -3,11 +3,15 @@ extends layout
 block content
   h1= title
 
-   p #[strong Insurance:]
-    a(href=patient.insurance.url) #{patient.insurance.ins_co_name}
-   p #[strong Employer:]
-    a(href=patient.employer.url) #{patient.employer.employer_name}
-
-   div(style='margin-left:20px;margin-top:20px')
-
-
+  h2 Patient Name
+  p #[strong First Name:] #{patient.pat_firstName}
+  p #[strong Last Name:] #{patient.pat_lastName}
+  h2 Contact Information
+  p #[strong Street Address:] #{patient.pat_address1} 
+  p #[strong City:] #{patient.pat_city}
+  p #[strong State:] #{patient.pat_state}
+  p #[strong Zip:] #{patient.pat_zip}
+  p #[strong Email:] a(href=patient.pat_email) #{patient.pat_email}
+  h2 Insurance and Employer
+  p #[strong Insurance Co:] #{patient.insurance.ins_co_name}
+  p #[strong Employer:] #{patient.employer.employer_name}
