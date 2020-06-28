@@ -1,4 +1,7 @@
 let Employer = require('../models/employer');
+let Patient = require('../models/patient');
+
+let async = require('async');
 
 //Display list of all patients.
 exports.employer_list = function(req, res) {
@@ -15,8 +18,26 @@ exports.employer_list = function(req, res) {
 };
 
 //Display detail page for a specific Patient. 
-exports.employer_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Employer Details');
+exports.employer_detail = function(req, res, next) {
+    async.parallel({
+        employer: function(callback) {
+            Employer.findById(req.params.id)
+                .exec(callback);
+        },
+
+        employer_patient: function(callback) {
+            Patient.find({ 'employer': req.params.id })
+                .exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.employer == null) {
+            let err = new Error('Employer not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.render('employer_detail', { title: 'Employer Detail', employer: results.employer, employer_patient: results.employer_patient });
+    });
 };
 
 //Display Patient create for on GET. 

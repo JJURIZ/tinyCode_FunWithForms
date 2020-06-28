@@ -17,6 +17,7 @@ var Employer = require('./models/employer')
 
 
 var mongoose = require('mongoose');
+const employer = require('./models/employer');
 var mongoDB = userArgs[0];
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
@@ -24,15 +25,24 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var patients = []
-var insurance = []
+var insurances = []
 var employers = []
 
-function patientCreate(pat_firstName, pat_lastName, pat_birthDate, pat_gender, pat_email, pat_zip, pat_state, pat_city, pat_address1, cb) {
-    patientdetail = { pat_firstName: pat_firstName, pat_lastName: pat_lastName, pat_birthDate: pat_birthDate, pat_gender: pat_gender, pat_email: pat_email, pat_zip: pat_zip, pat_state: pat_state, pat_city: pat_city, pat_address1: pat_address1 }
-
-
+function patientCreate(pat_firstName, pat_lastName, pat_birthDate, pat_gender, pat_email, pat_zip, pat_state, pat_city, pat_address1, insurance, employer, cb) {
+    patientdetail = {
+        pat_firstName: pat_firstName,
+        pat_lastName: pat_lastName,
+        pat_birthDate: pat_birthDate,
+        pat_gender: pat_gender,
+        pat_email: pat_email,
+        pat_zip: pat_zip,
+        pat_state: pat_state,
+        pat_city: pat_city,
+        pat_address1: pat_address1,
+        insurance: insurance,
+        employer: employer
+    }
     var patient = new Patient(patientdetail);
-
     patient.save(function(err) {
         if (err) {
             cb(err, null)
@@ -45,15 +55,21 @@ function patientCreate(pat_firstName, pat_lastName, pat_birthDate, pat_gender, p
 }
 
 function insuranceCreate(ins_co_name, ins_co_zip, ins_co_state, ins_co_city, ins_co_address1, cb) {
-    var insco = new Insurance({ ins_co_name: ins_co_name, ins_co_zip: ins_co_zip, ins_co_state: ins_co_state, ins_co_city: ins_co_city, ins_co_address1: ins_co_address1 });
-
-    insco.save(function(err) {
+    insurancedetail = {
+        ins_co_name: ins_co_name,
+        ins_co_zip: ins_co_zip,
+        ins_co_state: ins_co_state,
+        ins_co_city: ins_co_city,
+        ins_co_address1: ins_co_address1
+    }
+    var insurance = new Insurance(insurancedetail);
+    insurance.save(function(err) {
         if (err) {
             cb(err, null);
             return;
         }
-        console.log('New Insurance: ' + insco);
-        insurance.push(insurance)
+        console.log('New Insurance: ' + insurance);
+        insurances.push(insurance)
         cb(null, insurance);
     });
 }
@@ -67,37 +83,19 @@ function employerCreate(employer_name, employer_zip, employer_state, employer_ci
         employer_address1: employer_address1,
     }
 
-    var employ = new Employer(employerdetail);
-    employ.save(function(err) {
+    var employer = new Employer(employerdetail);
+    employer.save(function(err) {
         if (err) {
             cb(err, null)
             return
         }
-        console.log('New Employer: ' + employ);
-        employers.push(employ)
-        cb(null, employ)
+        console.log('New Employer: ' + employer);
+        employers.push(employer)
+        cb(null, employer)
     });
 }
 
 
-function createPatients(cb) {
-    async.series([
-            function(callback) {
-                patientCreate('Ben', 'Bova', '1932-11-8', 'Male', 'email@email1.com', 30033, 'CA', 'Los Angeles', '1 Hwy Ave', callback);
-            },
-            function(callback) {
-                patientCreate('Isaac', 'Asimov', '1920-01-02', 'Male', 'email@email2.com', 30032, 'CA', 'Los Angeles', '2 Hwy Ave', callback);
-            },
-            function(callback) {
-                patientCreate('Bob', 'Billings', '1960-01-02', 'Female', 'email@email3.com', 30031, 'CA', 'Oakland', '3 Hwy Ave', callback);
-            },
-            function(callback) {
-                patientCreate('Jim', 'Jones', '1971-12-16', 'Unknown', 'email@email4.com', 30034, 'AZ', 'Tempe', '4 Hwy Ave', callback);
-            }
-        ],
-        // optional callback
-        cb);
-}
 
 
 function createInsurance(cb) {
@@ -115,7 +113,6 @@ function createInsurance(cb) {
                 insuranceCreate("DentiCal", 10022, 'AL', 'Birmingham', '54 Ins. Co Lane', callback);
             },
         ],
-        // optional callback
         cb);
 }
 
@@ -136,12 +133,36 @@ function createEmployers(cb) {
         cb);
 }
 
+function createPatients(cb) {
+    async.series([
+            function(callback) {
+                patientCreate('Ben', 'Bova', '1932-11-8', 'Male', 'email@email1.com', 30033, 'CA', 'Los Angeles', '1 Hwy Ave', insurances[0], employers[0], callback);
+            },
+            function(callback) {
+                patientCreate('Isaac', 'Asimov', '1920-01-02', 'Male', 'email@email2.com', 30032, 'CA', 'Los Angeles', '2 Hwy Ave', insurances[1], employers[1], callback);
+            },
+            function(callback) {
+                patientCreate('Bob', 'Billings', '1960-01-02', 'Female', 'email@email3.com', 30031, 'CA', 'Oakland', '3 Hwy Ave', insurances[2], employers[2], callback);
+            },
+            function(callback) {
+                patientCreate('Jim', 'Jones', '1971-12-16', 'Unknown', 'email@email4.com', 30034, 'AZ', 'Tempe', '4 Hwy Ave', insurances[0], employers[1], callback);
+            },
+            function(callback) {
+                patientCreate('Jackie', 'Robeson', '1969-09-16', 'Female', 'email@email5.com', 30087, 'AZ', 'Tempe', '5 Hwy Ave', insurances[3], employers[2], callback);
+            },
+            function(callback) {
+                patientCreate('Pheobe', 'Alexandria', '1980-01-16', 'Female', 'email@email6.com', 30077, 'AL', 'Birmingham', '6 Hwy Ave', insurances[2], employers[0], callback);
+            }
+        ],
+        // optional callback
+        cb);
+}
 
 
 async.series([
-        createPatients,
         createInsurance,
-        createEmployers
+        createEmployers,
+        createPatients
     ],
     // Optional callback
     function(err, results) {

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+   p #[strong Insurance:]
+    a(href=patient.insurance.url) #{patient.insurance.ins_co_name}
+   p #[strong Employer:]
+    a(href=patient.employer.url) #{patient.employer.employer_name}
+
+   div(style='margin-left:20px;margin-top:20px')
+
+

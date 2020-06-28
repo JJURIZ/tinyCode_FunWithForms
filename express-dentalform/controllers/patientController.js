@@ -3,9 +3,9 @@ let Insurance = require('../models/insurance');
 let Employer = require('../models/employer');
 
 let async = require('async');
+let mongoose = require('mongoose');
 
 exports.index = function(req, res) {
-
     async.parallel({
             patient_count: function(callback) {
                 Patient.countDocuments({}, callback);
@@ -34,9 +34,27 @@ exports.patient_list = function(req, res, next) {
         });
 };
 
+
 //Display detail page for a specific Patient. 
-exports.patient_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient Details');
+exports.patient_detail = function(req, res, next) {
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({
+        patient: function(callback) {
+            Patient.findById(id)
+                .populate('insurance')
+                .populate('employer')
+                .exec(callback);
+        },
+        function(err, results) {
+            if (err) { return next(err); }
+            if (results.patient == null) {
+                let err = new Error('Patient not found');
+                err.status = 404;
+                return next(err);
+            }
+            res.render('patient_detail', { title: 'Patient Details' });
+        }
+    });
 };
 
 //Display Patient create for on GET. 

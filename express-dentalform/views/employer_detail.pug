@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  h1 Employer: #{employer.employer_name}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Employer
+
+    dl
+
+      each patient in employer_patient
+        dt
+          a(href=patient.url) #{patient.patientName}
+        dd #{patient.summary}
+
+      else
+        p This employer has no associated patients.
