@@ -24,11 +24,6 @@ exports.employer_detail = function(req, res, next) {
             Employer.findById(req.params.id)
                 .exec(callback);
         },
-
-        employer_patient: function(callback) {
-            Patient.find({ 'employer': req.params.id })
-                .exec(callback);
-        },
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.employer == null) {
@@ -36,7 +31,7 @@ exports.employer_detail = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('employer_detail', { title: 'Employer Detail', employer: results.employer, employer_patient: results.employer_patient });
+        res.render('employer_detail', { title: 'Employer Detail', employer: results.employer });
     });
 };
 
