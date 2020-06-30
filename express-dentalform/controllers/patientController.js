@@ -5,7 +5,8 @@ let Employer = require('../models/employer');
 let async = require('async');
 let mongoose = require('mongoose');
 const { body, validationResult } = require('express-validator/check');
-const { sanitizedBody } = require('express-validator/filter');
+const { sanitizeBody } = require('express-validator/filter');
+const patient = require('../models/patient');
 
 exports.index = function(req, res) {
     async.parallel({
@@ -61,14 +62,75 @@ exports.patient_detail = function(req, res, next) {
 };
 
 //Display Patient create for on GET. 
-exports.patient_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient create GET');
+exports.patient_create_get = function(req, res, next) {
+    async.parallel({
+        insurance: function(callback) {
+            Insurance.find(callback);
+        },
+        employer: function(callback) {
+            Employer.find(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        res.render('patient_form', { title: 'Create Patient', insurance: results.insurance, employer: results.employer });
+    });
 };
 
 //Handle Patient create on POST.
-exports.patient_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient create POST');
-};
+exports.patient_create_post = [
+    //Validate fields
+    body('pat_firstName', 'First name required').trim().isLength({ min: 1 }),
+    body('pat_lastName', 'Last name required').trim().isLength({ min: 1 }),
+    body('pat_email').trim().isLength({ min: 1 }),
+    body('pat_phone_home').trim().isLength({ min: 10 }),
+    body('pat_phone_cell').trim().isLength({ max: 10 }),
+
+    //Sanitize all fields
+    sanitizeBody('*').escape(),
+
+    //Process request after validation and sanitization
+    (req, res, next) => {
+
+        //Extract the validation errors from request.
+        const errors = validationResult(req);
+
+        //Create a Patient object with escaped and trimmed data
+        const book = new Book({
+            pat_firstName: req.body.pat_firstName,
+            pat_lastName: req.body.pat_lastName,
+            pat_email: req.body.pat_email,
+            pat_phone_homee: req.body.pat_phone_home,
+            pat_phone_cell: req.body.pat_phone_cell,
+            insurance: req.body.insurance,
+            employer: req.body.employer
+        });
+
+        if (!errors.isEmpty()) {
+            //There are errors.Render form again with sanitized values/error messages.
+
+            //Get all insurance and employers for form.
+            async.parallel({
+                insurance: function(callback) {
+                    Insurance.find(callback);
+                },
+                employer: function(callback) {
+                    Employer.find(callback);
+                },
+            }, function(err, results) {
+                if (err) { return next(err); }
+                res.render('patient_form', { title: 'Create New Patient', insurance: results.insurance, employer: results.employer, patient: patient, errors: errors.array() });
+            });
+            return;
+        } else {
+            //Data from form is invalid. Save Patient
+            patient.save(function(err) {
+                if (err) { return next(err); }
+                //successful - redirect to new patient record.
+                res.redirect(patient.url);
+            });
+        }
+    }
+];
 
 //Display Patient delete on GET.
 exports.patient_delete_get = function(req, res) {

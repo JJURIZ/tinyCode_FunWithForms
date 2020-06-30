@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='pat_firstName') First Name:
+      input#pat_firstName.form-control(type='text', name='pat_firstName', value=(undefined===patient ? '' : patient.pat_firstName ) )
+      br
+
+      label(for='insurance') Insurance:
+      select#insurance.form-control(type='select', placeholder='Select Insurance Company' name='insurance')
+        - insurances.sort(function(a,b) {let textA = a.ins_co_name.toUpperCase(); let textB = b.ins_co_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for insurance in insurances
+          if patient
+            option(value=insurance._id selected=(insurance._id.toString()==patient.insurance._id.toString() ? 'selected' : false) ) #{insurance.ins_co_name}
+          else
+            option(value=insurance._id) #{insurance.ins_co_name}
