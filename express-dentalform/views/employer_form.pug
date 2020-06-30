@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='employer_name') Employer:
+      input#employer_name.form-control(type='text', placeholder='Enter your employer name' name='employer_name' value=(undefined===employer ? '' : employer.employer_name))
+      br
+      label(for='employer_address1') Address Line 1:
+      input#employer_address1.form-control(type='text', name='employer_address1' value=(undefined===employer ? '' : employer.employer_address1))
+      br
+      label(for='employer_address2') Address Line 2:
+      input#employer_address2.form-control(type='text', name='employer_address2' value=(undefined===employer ? '' : employer.employer_address2))
+      br
+      label(for='employer_city') City:
+      input#employer_city.form-control(type='text', name='employer_city' value=(undefined===employer ? '' : employer.employer_city))
+      br
+      label(for='employer_state') State:
+      input#employer_state.form-control(type='select', name='employer_state' value=(undefined===employer ? '' : employer.employer_state))
+      br
+      label(for='employer_zip') Zip:
+      input#employer_zip.form-control(type='text', name='employer_zip' value=(undefined===employer ? '' : employer.employer_zip))
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for errors in errors
+        li!= error.msg
+
+
+
+        employer_zip: Path `employer_zip` is required., 
+        
+        employer_state: Path `employer_state` is required., 
+        
+        employer_city: Path `employer_city` is required., 
+
+        employer_address1: Path `employer_address1` is required.

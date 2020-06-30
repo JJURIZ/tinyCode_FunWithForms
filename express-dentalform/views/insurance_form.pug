@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Insurance Company Name:
+      input#name.form-control(type="text", name='ins_co_name', value=(undefined===insurance ? '' : insurance.ins_co_name))
+      br
+      label(for='address1') Address Line 1:
+      input#name.form-control(type="text", name='ins_co_address1', value=(undefined===insurance ? '' : insurance.ins_co_address1))
+      br
+      label(for='address2') Address Line 2:
+      input#name.form-control(type="text", name='ins_co_address2', value=(undefined===insurance ? '' : insurance.ins_co_address2))
+      br
+      label(for='city') City:
+      input#name.form-control(type="text", name='ins_co_city', value=(undefined===insurance ? '' : insurance.ins_co_city))
+      br
+      label(for='state') State:
+      input#name.form-control(type="text", name='ins_co_state', value=(undefined===insurance ? '' : insurance.ins_co_state))
+      br
+      label(for='zip') Zip:
+      input#name.form-control(type="text", name='ins_co_zip', value=(undefined===insurance ? '' : insurance.ins_co_zip))
+      br
+    button.btn.btn-primary(type="submit") Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

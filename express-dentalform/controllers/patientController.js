@@ -4,6 +4,8 @@ let Employer = require('../models/employer');
 
 let async = require('async');
 let mongoose = require('mongoose');
+const { body, validationResult } = require('express-validator/check');
+const { sanitizedBody } = require('express-validator/filter');
 
 exports.index = function(req, res) {
     async.parallel({
