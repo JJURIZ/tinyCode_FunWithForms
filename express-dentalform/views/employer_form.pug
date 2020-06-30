@@ -8,6 +8,9 @@ block content
       label(for='employer_name') Employer:
       input#employer_name.form-control(type='text', placeholder='Enter your employer name' name='employer_name' value=(undefined===employer ? '' : employer.employer_name))
       br
+      label(for='employer_phone') Phone:
+      input#employer_zip.form-control(type='text', name='employer_phone' value=(undefined===employer ? '' : employer.employer_phone))
+      br
       label(for='employer_address1') Address Line 1:
       input#employer_address1.form-control(type='text', name='employer_address1' value=(undefined===employer ? '' : employer.employer_address1))
       br

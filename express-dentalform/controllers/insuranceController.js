@@ -65,7 +65,15 @@ exports.insurance_create_post = [
         const errors = validator.validationResult(req);
 
         //Create an insurance company with escaped and trimmed data
-        let insurance = new Insurance({ name: req.body.ins_co_name, address: req.body.ins_co_address1 });
+        let insurance = new Insurance({
+            ins_co_name: req.body.ins_co_name,
+            ins_co_address1: req.body.ins_co_address1,
+            ins_co_address2: req.body.ins_co_address2,
+            ins_co_city: req.body.ins_co_city,
+            ins_co_state: req.body.ins_co_state,
+            ins_co_zip: req.body.ins_co_zip,
+            ins_co_phone: req.body.ins_co_phone
+        });
 
         if (!errors.isEmpty()) {
             //There are errors. Render the form again with sanitized values/error messages.

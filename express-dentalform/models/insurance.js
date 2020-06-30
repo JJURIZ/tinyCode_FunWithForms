@@ -9,7 +9,7 @@ var InsuranceSchema = new Schema({
     ins_co_city: { type: String, required: false, maxlength: 70 },
     ins_co_state: { type: String, required: false, maxlength: 40 },
     ins_co_zip: { type: String, required: false, maxlength: 5 },
-    ins_co_phone: { type: Number, required: false, minlength: 10 }
+    ins_co_phone: { type: String, required: false, minlength: 10 }
 });
 
 
