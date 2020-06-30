@@ -64,15 +64,15 @@ exports.patient_detail = function(req, res, next) {
 //Display Patient create for on GET. 
 exports.patient_create_get = function(req, res, next) {
     async.parallel({
-        insurance: function(callback) {
+        insurances: function(callback) {
             Insurance.find(callback);
         },
-        employer: function(callback) {
+        employers: function(callback) {
             Employer.find(callback);
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('patient_form', { title: 'Create Patient', insurance: results.insurance, employer: results.employer });
+        res.render('patient_form', { title: 'Create Patient', insurances: results.insurances, employers: results.employers });
     });
 };
 
@@ -110,15 +110,15 @@ exports.patient_create_post = [
 
             //Get all insurance and employers for form.
             async.parallel({
-                insurance: function(callback) {
+                insurances: function(callback) {
                     Insurance.find(callback);
                 },
-                employer: function(callback) {
+                employers: function(callback) {
                     Employer.find(callback);
                 },
             }, function(err, results) {
                 if (err) { return next(err); }
-                res.render('patient_form', { title: 'Create New Patient', insurance: results.insurance, employer: results.employer, patient: patient, errors: errors.array() });
+                res.render('patient_form', { title: 'Create New Patient', insurances: results.insurances, employers: results.employers, patient: patientName, errors: errors.array() });
             });
             return;
         } else {

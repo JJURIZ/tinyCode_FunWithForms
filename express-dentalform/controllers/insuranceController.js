@@ -3,6 +3,7 @@ let Patient = require('../models/patient');
 
 const async = require('async');
 const validator = require('express-validator');
+
 //Display list of all patients.
 exports.insurance_list = function(req, res) {
 
