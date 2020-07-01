@@ -4,21 +4,21 @@ let moment = require('moment');
 var Schema = mongoose.Schema;
 
 let PatientSchema = new Schema({
-    pat_firstName: { type: String, required: true, max: 70 },
-    pat_lastName: { type: String, required: true, max: 70 },
+    pat_firstName: { type: String, required: false, max: 70 },
+    pat_lastName: { type: String, required: false, max: 70 },
     pat_middleName: { type: String, required: false, max: 70 },
-    pat_address1: { type: String, required: true, maxlength: 150 },
+    pat_address1: { type: String, required: false, maxlength: 150 },
     pat_address2: { type: String, required: false, maxlength: 150 },
-    pat_city: { type: String, required: true, maxlength: 70 },
-    pat_state: { type: String, required: true, maxlength: 40 },
-    pat_zip: { type: String, required: true, maxlength: 5 },
-    pat_email: { type: String, required: true, maxlength: 155 },
+    pat_city: { type: String, required: false, maxlength: 70 },
+    pat_state: { type: String, required: false, maxlength: 40 },
+    pat_zip: { type: String, required: false, maxlength: 5 },
+    pat_email: { type: String, required: false, maxlength: 155 },
     pat_phone_home: { type: Number, required: false, maxlength: 10 },
     pat_phone_cell: { type: Number, required: false, maxlength: 10 },
     pat_phone_work: { type: Number, required: false, maxlength: 10 },
-    pat_gender: { type: String, required: true, maxlength: 7 },
+    pat_gender: { type: String, required: false, maxlength: 7 },
     pat_marital_status: { type: String, required: false, maxlength: 8 },
-    pat_birthDate: { type: String, required: true, maxlength: 12 },
+    pat_birthDate: { type: Date, required: false, maxlength: 100 },
     pat_age: { type: Number, required: false, maxlength: 3 },
     pat_ssn: { type: Number, required: false, maxlength: 9 },
     pat_referred_by: { type: String, required: false, maxlength: 150 },
@@ -31,7 +31,7 @@ let PatientSchema = new Schema({
     insured_birthDate: { type: Date, required: false, maxlength: 12 },
     pat_insured_rel: { type: String, required: false, maxlength: 155 },
     insurance: { type: Schema.ObjectId, ref: 'Insurance' },
-    employer: { type: Schema.ObjectId, ref: 'Employer' }
+    employer: { type: Schema.ObjectId, ref: 'Employer' },
 });
 
 //Virtual for patient's full name

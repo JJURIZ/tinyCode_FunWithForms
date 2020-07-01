@@ -4,6 +4,8 @@ let Employer = require('../models/employer');
 
 let async = require('async');
 let mongoose = require('mongoose');
+
+
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
@@ -77,17 +79,17 @@ exports.patient_create_get = function(req, res, next) {
 
 //Handle Patient create on POST.
 exports.patient_create_post = [
+
     //Validate fields
-    body('pat_firstName', 'First name required').trim().isLength({ min: 1 }),
-    body('pat_lastName', 'Last name required').trim().isLength({ min: 1 }),
-    body('pat_email').trim().isLength({ min: 1 }),
-    body('pat_phone_home').trim().isLength({ min: 10 }),
-    body('pat_phone_cell').trim().isLength({ min: 10 }),
-    body('pat_birthDate').isISO8601(),
+    body('pat_firstName').isLength({ min: 1 }).trim().withMessage('First name required').isAlphanumeric().withMessage('First name must contain only letters'),
+    body('pat_lastName').isLength({ min: 1 }).trim().withMessage('Last name required').isAlphanumeric().withMessage('Last name must contain only letters'),
+    body('pat_email').trim().isEmail().withMessage('Must be proper email format i.e. "someone@somewhere.com'),
+    // body('pat_email').trim().isLength({ min: 1 }),
+    // body('pat_birthDate').isISO8601(),
     //Sanitize all fields
 
     sanitizeBody('*').escape(),
-    // sanitizeBody('pat_birthDate').toDate(),
+    sanitizeBody('pat_birthDate').toDate(),
 
     //Process request after validation and sanitization
     (req, res, next) => {
@@ -116,7 +118,7 @@ exports.patient_create_post = [
             emergency_lastName: req.body.emergency_lastName,
             emergency_phone_cell: req.body.emergency_phone_cell,
             insurance: req.body.insurance,
-            employer: req.body.employer
+            employer: req.body.employer,
         });
 
         if (!errors.isEmpty()) {
