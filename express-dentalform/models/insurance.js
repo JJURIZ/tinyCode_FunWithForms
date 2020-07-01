@@ -17,7 +17,7 @@ var InsuranceSchema = new Schema({
 InsuranceSchema
     .virtual('url')
     .get(function() {
-        return '/catalog/insurances/' + this._id;
+        return '/catalog/insurance/' + this._id;
     });
 
 //Export model

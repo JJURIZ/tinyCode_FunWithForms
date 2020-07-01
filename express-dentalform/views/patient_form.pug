@@ -8,7 +8,20 @@ block content
       label(for='pat_firstName') First Name:
       input#pat_firstName.form-control(type='text', name='pat_firstName', value=(undefined===patient ? '' : patient.pat_firstName ) )
       br
-
+      label(for='pat_lastName') Last Name:
+      input#pat_lastName.form-control(type='text', name='pat_lastName', value=(undefined===patient ? '' : patient.pat_lastName ) )
+      br
+      h2 Insurance and Employer
+      br
+      label(for='employer') Employer:
+      select#employer.form-control(type='select', placeholder='Select Employer' name='employer')
+        - employers.sort(function(a,b) {let textA = a.employer_name.toUpperCase(); let textB = b.employer_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for employer in employers
+          if patient
+            option(value=employer._id selected=(employer._id.toString()==patient.employer._id.toString() ? 'selected' : false) ) #{employer.employer_name}
+          else
+            option(value=employer._id) #{employer.employer_name}
+      br
       label(for='insurance') Insurance:
       select#insurance.form-control(type='select', placeholder='Select Insurance Company' name='insurance')
         - insurances.sort(function(a,b) {let textA = a.ins_co_name.toUpperCase(); let textB = b.ins_co_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
@@ -17,3 +30,64 @@ block content
             option(value=insurance._id selected=(insurance._id.toString()==patient.insurance._id.toString() ? 'selected' : false) ) #{insurance.ins_co_name}
           else
             option(value=insurance._id) #{insurance.ins_co_name}
+      br
+      h2 Address & Contact Information
+      br
+      label(for='pat_address1') Address Line 1:
+      input#pat_address1.form-control(type='text', name='pat_address1', value=(undefined===patient ? '' : patient.pat_address1 ) )
+      br
+      label(for='pat_address2') Address Line 2:
+      input#pat_address2.form-control(type='text', name='pat_address2', value=(undefined===patient ? '' : patient.pat_address2 ) )
+      br
+      label(for='pat_city') City:
+      input#pat_address1.form-control(type='text', name='pat_city', value=(undefined===patient ? '' : patient.pat_city ) )
+      br
+      label(for='pat_state') State:
+      input#pat_state.form-control(type='text', name='pat_state', value=(undefined===patient ? '' : patient.pat_state ) )
+      br
+      label(for='pat_zip') Zip:
+      input#pat_zip.form-control(type='text', name='pat_zip', value=(undefined===patient ? '' : patient.pat_zip ) )
+      br
+      label(for='pat_home_phone') Home Phone:
+      input#pat_home_phone.form-control(type='text', name='pat_home_phone', value=(undefined===patient ? '' : patient.pat_home_phone ) )
+      br
+      label(for='pat_phone_cell') Cell Phone:
+      input#pat_phone_cell.form-control(type='text', name='pat_phone_cell', value=(undefined===patient ? '' : patient.pat_phone_cell ) )
+      br
+      label(for='pat_phone_work') Work Phone:
+      input#pat_phone_work.form-control(type='text', name='pat_phone_work', value=(undefined===patient ? '' : patient.pat_phone_work ) )
+      br
+      label(for='pat_email') Email:
+      input#pat_email.form-control(type='text', name='pat_email', value=(undefined===patient ? '' : patient.pat_email ) )
+      br
+      h2 Additional Information
+      br
+      label(for='pat_gender') Gender:
+      input#pat_gender.form-control(type='text', name='phone_gender', value=(undefined===patient ? '' : patient.pat_gender ) )
+      br
+      label(for='pat_birthDate') DOB:
+      input#pat_birthDate.form-control(type='date', name='pat_birthDate', value=(undefined===patient ? '' : patient.pat_birthDate ) )
+      br
+      label(for='pat_ssn') SS#:
+      input#pat_ssn.form-control(type='text', name='pat_ssn', value=(undefined===patient ? '' : patient.pat_ssn ) )
+      br
+      label(for='pat_referred_by') Referred By:
+      input#pat_referred_by.form-control(type='text', name='pat_referred_by', value=(undefined===patient ? '' : patient.pat_referred_by ) )
+      br
+      h2 Emergency Contact
+      br
+      label(for='emergency_firstName') First Name:
+      input#emergency_firstName.form-control(type='text', name='emergency_firstName', value=(undefined===patient ? '' : patient.emergency_firstName ) )
+      br
+      label(for='emergency_lastName') Last Name:
+      input#emergency_lastName.form-control(type='text', name='emergency_lastName', value=(undefined===patient ? '' : patient.emergency_lastName ) )
+      br
+      label(for='emergency_phone_cell') Cell Phone:
+      input#emergency_phone_cell.form-control(type='text', name='emergency_phone_cell', value=(undefined===patient ? '' : patient.emergency_phone_cell ) )
+      br
+      button.btn.btn-primary(type='submit') Submit
+      
+      if errors
+        ul
+          for error in errors
+            li!= error.msg

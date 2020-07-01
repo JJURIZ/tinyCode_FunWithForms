@@ -76,8 +76,11 @@ exports.employer_create_post = [
             //Check if Employer with same name already exists.
             Employer.findOne({ 'employer_name': req.body.employer_name })
                 .exec(function(err, found_employer) {
-                    if (err) {
-                        return next(err);
+                    if (err) { return next(err); }
+
+                    if (found_employer) {
+                        //Employer exists, redirect to its details
+                        res.redirect(found_employer.url);
                     } else {
                         employer.save(function(err) {
                             if (err) { return next(err); }

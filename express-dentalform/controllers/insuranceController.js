@@ -41,23 +41,13 @@ exports.insurance_detail = function(req, res, next) {
         res.render('insurance_form', { title: 'Create Insurance Company' })
     };
 
-//Handle Patient create on POST.
+//Handle Insurance create on POST.
 exports.insurance_create_post = [
     //Vaidate that the required fields are not empty
     validator.body('ins_co_name', 'Insurance Company name required').trim().isLength({ min: 1 }),
-    validator.body('ins_co_address1', 'Insurance Company address line 1 is required').trim().isLength({ min: 1 }),
-    validator.body('ins_co_address2').trim(),
-    validator.body('ins_co_city', 'Insurance Company city is required').trim().isLength({ min: 1 }),
-    validator.body('ins_co_state', 'Insurance Company state is required').trim().isLength({ min: 2 }),
-    validator.body('ins_co_zip', 'Insurance Company zip code is required').trim().isLength({ min: 5, max: 5 }),
 
     //Sanitize (escape) required fields.
     validator.sanitizeBody('ins_co_name').escape(),
-    validator.sanitizeBody('ins_co_address1').escape(),
-    validator.sanitizeBody('ins_co_address2').escape(),
-    validator.sanitizeBody('ins_co_city').escape(),
-    validator.sanitizeBody('ins_co_state').escape(),
-    validator.sanitizeBody('ins_co_zip').escape(),
 
     //Process request after validation and sanitization
     (req, res, next) => {

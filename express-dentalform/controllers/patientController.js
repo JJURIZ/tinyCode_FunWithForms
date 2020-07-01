@@ -86,6 +86,7 @@ exports.patient_create_post = [
     body('pat_phone_cell').trim().isLength({ max: 10 }),
 
     //Sanitize all fields
+
     sanitizeBody('*').escape(),
 
     //Process request after validation and sanitization
@@ -95,12 +96,25 @@ exports.patient_create_post = [
         const errors = validationResult(req);
 
         //Create a Patient object with escaped and trimmed data
-        const book = new Book({
+        const patient = new Patient({
             pat_firstName: req.body.pat_firstName,
             pat_lastName: req.body.pat_lastName,
-            pat_email: req.body.pat_email,
-            pat_phone_homee: req.body.pat_phone_home,
+            pat_address1: req.body.pat_address1,
+            pat_address2: req.body.pat_address2,
+            pat_city: req.body.pat_city,
+            pat_state: req.body.pat_state,
+            pat_zip: req.body.pat_zip,
+            pat_phone_home: req.body.pat_phone_home,
             pat_phone_cell: req.body.pat_phone_cell,
+            pat_phone_work: req.body.pat_phone_work,
+            pat_email: req.body.pat_email,
+            pat_gender: req.body.pat_gender,
+            pat_birthDate: req.body.pat_birthDate,
+            pat_ssn: req.body.pat_ssn,
+            pat_referred_by: req.body.pat_referred_by,
+            emergency_firstName: req.body.emergency_firstName,
+            emergency_lastName: req.body.emergency_lastName,
+            emergency_phone_cell: req.body.emergency_phone_cell,
             insurance: req.body.insurance,
             employer: req.body.employer
         });
@@ -118,7 +132,7 @@ exports.patient_create_post = [
                 },
             }, function(err, results) {
                 if (err) { return next(err); }
-                res.render('patient_form', { title: 'Create New Patient', insurances: results.insurances, employers: results.employers, patient: patientName, errors: errors.array() });
+                res.render('patient_form', { title: 'Create New Patient', insurances: results.insurances, employers: results.employers, patient: patient, errors: errors.array() });
             });
             return;
         } else {
