@@ -6,7 +6,6 @@ let async = require('async');
 let mongoose = require('mongoose');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-const patient = require('../models/patient');
 
 exports.index = function(req, res) {
     async.parallel({
@@ -83,11 +82,12 @@ exports.patient_create_post = [
     body('pat_lastName', 'Last name required').trim().isLength({ min: 1 }),
     body('pat_email').trim().isLength({ min: 1 }),
     body('pat_phone_home').trim().isLength({ min: 10 }),
-    body('pat_phone_cell').trim().isLength({ max: 10 }),
-
+    body('pat_phone_cell').trim().isLength({ min: 10 }),
+    body('pat_birthDate').isISO8601(),
     //Sanitize all fields
 
     sanitizeBody('*').escape(),
+    // sanitizeBody('pat_birthDate').toDate(),
 
     //Process request after validation and sanitization
     (req, res, next) => {

@@ -4,9 +4,9 @@ let moment = require('moment');
 var Schema = mongoose.Schema;
 
 let PatientSchema = new Schema({
-    pat_firstName: { type: String, required: true, max: 70, trim: true },
-    pat_lastName: { type: String, required: true, max: 70, trim: true },
-    pat_middleName: { type: String, required: false, max: 70, trim: true },
+    pat_firstName: { type: String, required: true, max: 70 },
+    pat_lastName: { type: String, required: true, max: 70 },
+    pat_middleName: { type: String, required: false, max: 70 },
     pat_address1: { type: String, required: true, maxlength: 150 },
     pat_address2: { type: String, required: false, maxlength: 150 },
     pat_city: { type: String, required: true, maxlength: 70 },
@@ -18,7 +18,7 @@ let PatientSchema = new Schema({
     pat_phone_work: { type: Number, required: false, maxlength: 10 },
     pat_gender: { type: String, required: true, maxlength: 7 },
     pat_marital_status: { type: String, required: false, maxlength: 8 },
-    pat_birthDate: { type: Date, required: true, maxlength: 10 },
+    pat_birthDate: { type: String, required: true, maxlength: 12 },
     pat_age: { type: Number, required: false, maxlength: 3 },
     pat_ssn: { type: Number, required: false, maxlength: 9 },
     pat_referred_by: { type: String, required: false, maxlength: 150 },
@@ -28,8 +28,8 @@ let PatientSchema = new Schema({
     insured_firstName: { type: String, required: false, maxlength: 70 },
     insured_lastName: { type: String, required: false, maxlength: 70 },
     insured_ssn: { type: Number, required: false, maxlength: 9 },
-    insured_birthDate: { type: Date, required: false, maxlength: 10 },
-    pat_insured_rel: { type: String, required: false, maxlength: 6 },
+    insured_birthDate: { type: Date, required: false, maxlength: 12 },
+    pat_insured_rel: { type: String, required: false, maxlength: 155 },
     insurance: { type: Schema.ObjectId, ref: 'Insurance' },
     employer: { type: Schema.ObjectId, ref: 'Employer' }
 });

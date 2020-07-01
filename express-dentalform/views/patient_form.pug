@@ -40,7 +40,7 @@ block content
       input#pat_address2.form-control(type='text', name='pat_address2', value=(undefined===patient ? '' : patient.pat_address2 ) )
       br
       label(for='pat_city') City:
-      input#pat_address1.form-control(type='text', name='pat_city', value=(undefined===patient ? '' : patient.pat_city ) )
+      input#pat_city.form-control(type='text', name='pat_city', value=(undefined===patient ? '' : patient.pat_city ) )
       br
       label(for='pat_state') State:
       input#pat_state.form-control(type='text', name='pat_state', value=(undefined===patient ? '' : patient.pat_state ) )
@@ -48,8 +48,8 @@ block content
       label(for='pat_zip') Zip:
       input#pat_zip.form-control(type='text', name='pat_zip', value=(undefined===patient ? '' : patient.pat_zip ) )
       br
-      label(for='pat_home_phone') Home Phone:
-      input#pat_home_phone.form-control(type='text', name='pat_home_phone', value=(undefined===patient ? '' : patient.pat_home_phone ) )
+      label(for='pat_phone_home') Home Phone:
+      input#pat_phone_home.form-control(type='text', name='pat_phone_home', value=(undefined===patient ? '' : patient.pat_phone_home ) )
       br
       label(for='pat_phone_cell') Cell Phone:
       input#pat_phone_cell.form-control(type='text', name='pat_phone_cell', value=(undefined===patient ? '' : patient.pat_phone_cell ) )
@@ -63,7 +63,7 @@ block content
       h2 Additional Information
       br
       label(for='pat_gender') Gender:
-      input#pat_gender.form-control(type='text', name='phone_gender', value=(undefined===patient ? '' : patient.pat_gender ) )
+      input#pat_gender.form-control(type='text', name='pat_gender', value=(undefined===patient ? '' : patient.pat_gender ) )
       br
       label(for='pat_birthDate') DOB:
       input#pat_birthDate.form-control(type='date', name='pat_birthDate', value=(undefined===patient ? '' : patient.pat_birthDate ) )

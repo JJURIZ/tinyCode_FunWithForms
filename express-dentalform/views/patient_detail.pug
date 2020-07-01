@@ -6,14 +6,29 @@ block content
   h2 Patient Name
   p #[strong First Name:] #{patient.pat_firstName}
   p #[strong Last Name:] #{patient.pat_lastName}
-  h2 Contact Information
-  p #[strong Street Address:] #{patient.pat_address1} 
-  p #[strong City:] #{patient.pat_city}
-  p #[strong State:] #{patient.pat_state}
-  p #[strong Zip:] #{patient.pat_zip}
-  p #[strong Email:] #{patient.pat_email}
   h2 Insurance and Employer
   p #[strong Insurance Co:] 
    a(href=patient.insurance.url) #{patient.insurance.ins_co_name}
   p #[strong Employer:] 
    a(href=patient.employer.url) #{patient.employer.employer_name}
+  h2 Address & Contact Information
+  p #[strong Street Address:] #{patient.pat_address1} 
+  p #[strong Street Address 2:] #{patient.pat_address2} 
+  p #[strong City:] #{patient.pat_city}
+  p #[strong State:] #{patient.pat_state}
+  p #[strong Zip:] #{patient.pat_zip}
+  p #[strong Home Phone:] #{patient.pat_phone_home}
+  p #[strong Cell Phone:] #{patient.pat_phone_cell}
+  p #[strong Work Phone:] #{patient.pat_phone_work}
+  p #[strong Email:] #{patient.pat_email}
+  h2 Additional Information
+  p #[strong Gender:] #{patient.pat_gender}
+  p #[strong DOB:] #{patient.pat_birthDate}
+  p #[strong SS#:] #{patient.pat_ssn}
+  p #[strong Reffered By:] #{patient.pat_referred_by}
+  h2 Emergency Contact
+  p #[strong First Name:] #{patient.emergency_firstName}
+  p #[strong Last Name:] #{patient.emergency_lastName}
+  p #[strong Cell Phone:] #{patient.emergency_phone_cell}
+
+  
