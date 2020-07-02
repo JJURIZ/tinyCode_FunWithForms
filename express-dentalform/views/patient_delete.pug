@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  p Are you sure you want to delete #{patient.pat_firstName} #{patient.pat_lastName}?
+
+  form(method='POST' action='')
+    div.form-group
+      input#patientid.form-control(type='hidden', name='patientid', required='true', value=patient._id)
+
+      button.btn.btn-primary(type='submit') Delete

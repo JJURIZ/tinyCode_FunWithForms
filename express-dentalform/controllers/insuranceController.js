@@ -1,7 +1,7 @@
 let Insurance = require('../models/insurance');
 let Patient = require('../models/patient');
 
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const async = require('async');
 const validator = require('express-validator');
 
@@ -115,8 +115,10 @@ exports.insurance_delete_post = function(req, res, next) {
     let id = mongoose.Types.ObjectId(req.params.id);
     async.parallel({ insurance: function(callback) { Insurance.findById(id).exec(callback) } },
         function(err, results) {
-            if (err) { return next(err); } else Insurance.findByIdAndRemove(req.body.insuranceid, function deleteInsurance(err) { if (err) { return next(err); }
-                res.redirect('/catalog/insurance'); })
+            if (err) { return next(err); } else Insurance.findByIdAndRemove(req.body.insuranceid, function deleteInsurance(err) {
+                if (err) { return next(err); }
+                res.redirect('/catalog/insurance');
+            })
         });
 };
 

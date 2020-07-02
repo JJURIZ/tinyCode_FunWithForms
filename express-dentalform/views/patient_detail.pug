@@ -31,4 +31,8 @@ block content
   p #[strong Last Name:] #{patient.emergency_lastName}
   p #[strong Cell Phone:] #{patient.emergency_phone_cell}
 
+  hr
+  p
+    a(href=patient.url+'/delete') Delete Patient Record
+
   

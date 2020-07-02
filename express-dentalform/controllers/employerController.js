@@ -1,6 +1,7 @@
 let Employer = require('../models/employer');
 let Patient = require('../models/patient');
 
+const mongoose = require('mongoose');
 let async = require('async');
 const validator = require('express-validator');
 
@@ -94,13 +95,31 @@ exports.employer_create_post = [
 ];
 
 //Display Employer delete on GET.
-exports.employer_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Employer delete GET');
+exports.employer_delete_get = function(req, res, next) {
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({
+        employer: function(callback) {
+            Employer.findById(id).exec(callback)
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.employer == null) {
+            res.redirect('/catalog/employer');
+        }
+        res.render('employer_delete', { title: 'Delete Employer', employer: results.employer })
+    });
 };
 
 //Handle Employer delete on POST.
-exports.employer_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Employer delete POST');
+exports.employer_delete_post = function(req, res, next) {
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({ employer: function(callback) { Employer.findById(id).exec(callback) } },
+        function(err, results) {
+            if (err) { return next(err); } else Employer.findByIdAndRemove(req.body.employerid, function deleteEmployer(err) {
+                if (err) { return next(err); }
+                res.redirect('/catalog/employer');
+            })
+        });
 };
 
 //Display Employer update form on GET.

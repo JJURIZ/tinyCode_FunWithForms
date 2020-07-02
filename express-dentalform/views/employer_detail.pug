@@ -10,3 +10,7 @@ block content
   p #[strong City:] #{employer.employer_city}
   p #[strong State:] #{employer.employer_state}
   p #[strong Zip:] #{employer.employer_zip}
+
+  hr
+  p
+    a(href=employer.url+'/delete') Delete Employer

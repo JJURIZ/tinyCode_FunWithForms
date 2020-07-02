@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  p Are you sure you want to delete #{employer.employer_name}?
+
+  form(method='POST' action='')
+    div.form-group
+      input#employerid.form-control(type='hidden', name='employerid', required='true', value=employer._id)
+
+      button.btn.btn-primary(type='submit') Delete

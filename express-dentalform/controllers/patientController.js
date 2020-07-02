@@ -150,12 +150,29 @@ exports.patient_create_post = [
 
 //Display Patient delete on GET.
 exports.patient_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient delete GET');
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({
+        patient: function(callback) {
+            Patient.findById(id).exec(callback)
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.patient == null) {
+            res.redirect('/catalog/patient');
+        }
+        res.render('patient_delete', { title: 'Delete Patient Record', patient: results.patient })
+    });
 };
-
 //Handle Patient delete on POST.
 exports.patient_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient delete POST');
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({ patient: function(callback) { Patient.findById(id).exec(callback) } },
+        function(err, results) {
+            if (err) { return next(err); } else Patient.findByIdAndRemove(req.body.patientid, function deletePatient(err) {
+                if (err) { return next(err); }
+                res.redirect('/catalog/patient');
+            })
+        });
 };
 
 //Display Patient update form on GET.
