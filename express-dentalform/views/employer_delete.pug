@@ -1,12 +1,26 @@
 extends layout
 
 block content
-  h1 #{title}
+  h1 #{title}: #{employer.employer_name}
 
-  p Are you sure you want to delete #{employer.employer_name}?
+  if employer_patient.length
 
-  form(method='POST' action='')
-    div.form-group
-      input#employerid.form-control(type='hidden', name='employerid', required='true', value=employer._id)
+    p #[strong The following patients are connected to #{employer.employer_name}. In order to delete the employer, no patients may be connected to #{employer.employer_name}.]
 
-      button.btn.btn-primary(type='submit') Delete
+    div(style='margin-left:20px;margin-top20px')
+
+      h4 Patients
+
+      dl
+      each patient in employer_patient
+        dt
+          a(href=patient.url) #{patient.pat_firstName} #{patient.pat_lastName}
+
+  else
+    p Are you sure you want to delete #{employer.employer_name}?
+
+    form(method='POST' action='')
+      div.form-group
+        input#employerid.form-control(type='hidden', name='employerid', required='true', value=employer._id)
+
+        button.btn.btn-primary(type='submit') Delete

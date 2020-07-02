@@ -26,6 +26,9 @@ exports.employer_detail = function(req, res, next) {
             Employer.findById(req.params.id)
                 .exec(callback);
         },
+        employer_patient: function(callback) {
+            Patient.find({ 'patient': req.params.id }).exec(callback)
+        },
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.employer == null) {
@@ -33,7 +36,7 @@ exports.employer_detail = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('employer_detail', { title: 'Employer Detail', employer: results.employer });
+        res.render('employer_detail', { title: 'Employer Detail', employer: results.employer, employer_patient: results.employer_patient });
     });
 };
 
@@ -101,24 +104,39 @@ exports.employer_delete_get = function(req, res, next) {
         employer: function(callback) {
             Employer.findById(id).exec(callback)
         },
+        employer_patient: function(callback) {
+            Patient.find({ 'patient': req.params.id }).exec(callback)
+        },
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.employer == null) {
             res.redirect('/catalog/employer');
         }
-        res.render('employer_delete', { title: 'Delete Employer', employer: results.employer })
+        res.render('employer_delete', { title: 'Delete Employer', employer: results.employer, employer_patient: results.employer_patient })
     });
 };
 
 //Handle Employer delete on POST.
 exports.employer_delete_post = function(req, res, next) {
     let id = mongoose.Types.ObjectId(req.params.id);
-    async.parallel({ employer: function(callback) { Employer.findById(id).exec(callback) } },
+    async.parallel({
+            employer: function(callback) {
+                Employer.findById(id).exec(callback)
+            },
+            employer_patient: function(callback) {
+                Patient.find({ 'patient': req.body.patientid }).exec(callback)
+            },
+        },
         function(err, results) {
-            if (err) { return next(err); } else Employer.findByIdAndRemove(req.body.employerid, function deleteEmployer(err) {
-                if (err) { return next(err); }
-                res.redirect('/catalog/employer');
-            })
+            if (err) { return next(err); }
+            if (results.employer_patient.length > 0) {
+                res.render('employer_delete', { title: 'Delete Employer', employer: results.employer, employer_patient: results.employer_patient })
+            } else {
+                Employer.findByIdAndRemove(req.body.employerid, function deleteEmployer(err) {
+                    if (err) { return next(err); }
+                    res.redirect('/catalog/employer');
+                })
+            }
         });
 };
 
