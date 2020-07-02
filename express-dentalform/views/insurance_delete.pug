@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  p Are you sure you want to delete #{insurance.ins_co_name}?
+
+  form(method='POST' action='')
+    div.form-group
+      input#insuranceid.form-control(type='hidden', name='insuranceid', required='true', value=insurance._id)
+
+      button.btn.btn-primary(type='submit') Delete

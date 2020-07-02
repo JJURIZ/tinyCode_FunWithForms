@@ -1,6 +1,7 @@
 let Insurance = require('../models/insurance');
 let Patient = require('../models/patient');
 
+let mongoose = require('mongoose');
 const async = require('async');
 const validator = require('express-validator');
 
@@ -94,14 +95,31 @@ exports.insurance_create_post = [
 ];
 
 //Display Patient delete on GET.
-exports.insurance_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Insurance delete GET');
+exports.insurance_delete_get = function(req, res, next) {
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({
+        insurance: function(callback) {
+            Insurance.findById(id).exec(callback)
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.insurance == null) {
+            res.redirect('/catalog/insurance');
+        }
+        res.render('insurance_delete', { title: 'Delete Insurance Company', insurance: results.insurance })
+    });
 };
 
 //Handle Patient delete on POST.
-exports.insurance_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Insurance delete POST');
+exports.insurance_delete_post = function(req, res, next) {
+    let id = mongoose.Types.ObjectId(req.params.id);
+    async.parallel({ insurance: function(callback) { Insurance.findById(id).exec(callback) } },
+        function(err, results) {
+            if (err) { return next(err); } else Insurance.findByIdAndRemove(req.body.insuranceid, function deleteInsurance(err) { if (err) { return next(err); }
+                res.redirect('/catalog/insurance'); })
+        });
 };
+
 
 //Display Patient update form on GET.
 exports.insurance_update_get = function(req, res) {
