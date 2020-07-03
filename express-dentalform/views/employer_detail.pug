@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
   h1 Employer Details
 
   p #[strong Employer:] #{employer.employer_name}
@@ -11,17 +10,6 @@ block content
   p #[strong State:] #{employer.employer_state}
   p #[strong Zip:] #{employer.employer_zip}
 
-  div(style='margin-left:20px;margin-top20px')
-
-    h4 Associated Patients
-
-    dl
-    each patient in employer_patient
-      dt
-        a(href=patient.url) #{patient.pat_firstName} #{patient.pat_lastName}
-    else
-      p #{employer.employer_name} has no associated patients.
-  
   hr
   p
     a(href=employer.url+'/delete') Delete Employer

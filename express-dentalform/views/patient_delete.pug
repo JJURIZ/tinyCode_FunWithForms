@@ -1,9 +1,9 @@
 extends layout
 
 block content
-  h1 #{title}
+  h1 #{title} for #{patient.pat_firstName} #{patient.pat_lastName}
 
-  p Are you sure you want to delete #{patient.pat_firstName} #{patient.pat_lastName}?
+  h4 The patient record for #{patient.pat_firstName} #{patient.pat_lastName} will be permanently deleted if you proceed.
 
   form(method='POST' action='')
     div.form-group
