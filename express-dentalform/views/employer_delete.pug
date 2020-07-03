@@ -3,20 +3,18 @@ extends layout
 block content
   h1 #{title}: #{employer.employer_name}
 
-  if employer_patient.length
+  if employers_patients.length
 
     p #[strong The following patients are connected to #{employer.employer_name}. In order to delete the employer, no patients may be connected to #{employer.employer_name}.]
 
     div(style='margin-left:20px;margin-top20px')
 
-      h4 Patients
-
       dl
-      each patient in employer_patient
+      each patient in employers_patients
         dt
           a(href=patient.url) #{patient.pat_firstName} #{patient.pat_lastName}
 
-  else
+  else  
     p Are you sure you want to delete #{employer.employer_name}?
 
     form(method='POST' action='')

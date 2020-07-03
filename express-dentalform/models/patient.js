@@ -30,8 +30,8 @@ let PatientSchema = new Schema({
     insured_ssn: { type: Number, required: false, maxlength: 9 },
     insured_birthDate: { type: Date, required: false, maxlength: 12 },
     pat_insured_rel: { type: String, required: false, maxlength: 155 },
-    insurance: { type: Schema.ObjectId, ref: 'Insurance' },
-    employer: { type: Schema.ObjectId, ref: 'Employer' },
+    insurance: { type: Schema.Types.ObjectId, ref: 'Insurance' },
+    employer: { type: Schema.Types.ObjectId, ref: 'Employer' },
 });
 
 //Virtual for patient's full name

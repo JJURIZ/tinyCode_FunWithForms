@@ -23,8 +23,7 @@ exports.employer_list = function(req, res) {
 exports.employer_detail = function(req, res, next) {
     async.parallel({
         employer: function(callback) {
-            Employer.findById(req.params.id)
-                .exec(callback);
+            Employer.findById(req.params.id).exec(callback);
         },
         employer_patient: function(callback) {
             Patient.find({ 'patient': req.params.id }).exec(callback)
@@ -99,38 +98,40 @@ exports.employer_create_post = [
 
 //Display Employer delete on GET.
 exports.employer_delete_get = function(req, res, next) {
-    let id = mongoose.Types.ObjectId(req.params.id);
+
     async.parallel({
         employer: function(callback) {
-            Employer.findById(id).exec(callback)
+            Employer.findById(req.params.id).exec(callback)
         },
-        employer_patient: function(callback) {
-            Patient.find({ 'patient': req.params.id }).exec(callback)
+        employer_patients: function(callback) {
+            Patient.find({ 'employer': req.params.id }).exec(callback)
         },
     }, function(err, results) {
         if (err) { return next(err); }
         if (results.employer == null) {
             res.redirect('/catalog/employer');
         }
-        res.render('employer_delete', { title: 'Delete Employer', employer: results.employer, employer_patient: results.employer_patient })
+        res.render('employer_delete', { title: 'Delete Employer', employer: results.employer, employers_patients: results.employer_patients })
     });
 };
 
 //Handle Employer delete on POST.
 exports.employer_delete_post = function(req, res, next) {
-    let id = mongoose.Types.ObjectId(req.params.id);
+
     async.parallel({
             employer: function(callback) {
-                Employer.findById(id).exec(callback)
+                Employer.findById(req.body.employerid).exec(callback)
             },
-            employer_patient: function(callback) {
-                Patient.find({ 'patient': req.body.patientid }).exec(callback)
+            employer_patients: function(callback) {
+                Patient.find({ 'employer': req.body.employerid }).exec(callback)
             },
         },
         function(err, results) {
             if (err) { return next(err); }
-            if (results.employer_patient.length > 0) {
-                res.render('employer_delete', { title: 'Delete Employer', employer: results.employer, employer_patient: results.employer_patient })
+            // Sucess
+            if (results.employers_patients.length > 0) {
+                // Employer has patients.
+                res.render('employer_delete', { title: 'Delete Employer', employer: results.employer, employers_patients: results.employer_patients })
             } else {
                 Employer.findByIdAndRemove(req.body.employerid, function deleteEmployer(err) {
                     if (err) { return next(err); }

@@ -3,10 +3,22 @@ extends layout
 block content
   h1 #{title}
 
-  p Are you sure you want to delete #{insurance.ins_co_name}?
+  if insurances_patients.length
+  
+    p #[strong The following patients are connected to this Insurance Company:]
 
-  form(method='POST' action='')
-    div.form-group
-      input#insuranceid.form-control(type='hidden', name='insuranceid', required='true', value=insurance._id)
+    div(style='margin-left:20px;margin-top20px')
 
-      button.btn.btn-primary(type='submit') Delete
+      dl
+      each patient in insurances_patients
+        dt
+          a(href=patient.url) #{patient.pat_firstName} #{patient.pat_lastName}
+
+  else
+    p Are you sure you want to delete #{insurance.ins_co_name}?
+
+    form(method='POST' action='')
+      div.form-group
+        input#insuranceid.form-control(type='hidden', name='insuranceid', required='true', value=insurance._id)
+
+        button.btn.btn-primary(type='submit') Delete

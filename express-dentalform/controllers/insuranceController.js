@@ -94,34 +94,52 @@ exports.insurance_create_post = [
     }
 ];
 
-//Display Patient delete on GET.
 exports.insurance_delete_get = function(req, res, next) {
-    let id = mongoose.Types.ObjectId(req.params.id);
+
     async.parallel({
         insurance: function(callback) {
-            Insurance.findById(id).exec(callback)
+            Insurance.findById(req.params.id).exec(callback)
+        },
+        insurance_patients: function(callback) {
+            Patient.find({ 'insurance': req.params.id }).exec(callback)
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        if (results.insurance == null) {
+        if (results.insurance == null) { // No results.
             res.redirect('/catalog/insurance');
         }
-        res.render('insurance_delete', { title: 'Delete Insurance Company', insurance: results.insurance })
+        // Successful, so render.
+        res.render('insurance_delete', { title: 'Delete Insurance Company', insurance: results.insurance, insurances_patients: results.insurance_patients });
     });
 };
 
-//Handle Patient delete on POST.
+// Handle Insurance delete on POST.
 exports.insurance_delete_post = function(req, res, next) {
-    let id = mongoose.Types.ObjectId(req.params.id);
-    async.parallel({ insurance: function(callback) { Insurance.findById(id).exec(callback) } },
-        function(err, results) {
-            if (err) { return next(err); } else Insurance.findByIdAndRemove(req.body.insuranceid, function deleteInsurance(err) {
-                if (err) { return next(err); }
-                res.redirect('/catalog/insurance');
-            })
-        });
-};
 
+    async.parallel({
+        insurance: function(callback) {
+            Insurance.findById(req.body.insuranceid).exec(callback)
+        },
+        insurance_patients: function(callback) {
+            Patient.find({ 'insurance': req.body.insuranceid }).exec(callback)
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        // Success
+        if (results.insurances_patients.length > 0) {
+            // Insurance has patients. Render in same way as for GET route.
+            res.render('insurance_delete', { title: 'Delete Insurance Company', insurance: results.insurance, insurances_patients: results.insurance_patients });
+            return;
+        } else {
+            // Author has no books. Delete object and redirect to the list of authors.
+            Insurance.findByIdAndRemove(req.body.insuranceid, function deleteInsurance(err) {
+                if (err) { return next(err); }
+                // Success - go to insurance list
+                res.redirect('/catalog/insurance')
+            })
+        }
+    });
+};
 
 //Display Patient update form on GET.
 exports.insurance_update_get = function(req, res) {
