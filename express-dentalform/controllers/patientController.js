@@ -8,6 +8,7 @@ let mongoose = require('mongoose');
 
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+const { findById, findByIdAndUpdate } = require('../models/patient');
 
 exports.index = function(req, res) {
     async.parallel({
@@ -176,11 +177,92 @@ exports.patient_delete_post = function(req, res) {
 };
 
 //Display Patient update form on GET.
-exports.patient_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient update GET');
+exports.patient_update_get = function(req, res, next) {
+
+    //Get patient, insurance, and employers for form
+    async.parallel({
+        patient: function(callback) {
+            Patient.findById(req.params.id).populate('insurance').populate('employer').exec(callback);
+        },
+        insurances: function(callback) {
+            Insurance.find(callback);
+        },
+        employers: function(callback) {
+            Employer.find(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.patient == null) {
+            let err = new Error('Patient not found');
+            err.status = 404;
+            return next(err)
+        }
+        //Success
+        res.render('patient_form', { title: 'Update Patient', employers: results.employers, insurances: results.insurances, patient: results.patient });
+    });
 };
 
 //Handle Patient update on POST.
-exports.patient_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Patient update POST');
-};
+exports.patient_update_post = [
+
+    //Validate fields
+    body('pat_firstName').isLength({ min: 1 }).trim().withMessage('First name required').isAlphanumeric().withMessage('First name must contain only letters'),
+    body('pat_lastName').isLength({ min: 1 }).trim().withMessage('Last name required').isAlphanumeric().withMessage('Last name must contain only letters'),
+    body('pat_email').trim().isEmail().withMessage('Must be proper email format i.e. "someone@somewhere.com'),
+    //Sanitize all fields
+
+    sanitizeBody('*').escape(),
+    sanitizeBody('pat_birthDate').toDate(),
+
+    //Process request after validation and sanitization
+    (req, res, next) => {
+        const errors = validationResults(req);
+
+        //Create a Patient object with escaped/trimmed data and old id
+        const patient = new Patient({
+            pat_lastName: req.body.pat_lastName,
+            pat_address1: req.body.pat_address1,
+            pat_address2: req.body.pat_address2,
+            pat_city: req.body.pat_city,
+            pat_state: req.body.pat_state,
+            pat_zip: req.body.pat_zip,
+            pat_phone_home: req.body.pat_phone_home,
+            pat_phone_cell: req.body.pat_phone_cell,
+            pat_phone_work: req.body.pat_phone_work,
+            pat_email: req.body.pat_email,
+            pat_gender: req.body.pat_gender,
+            pat_birthDate: req.body.pat_birthDate,
+            pat_ssn: req.body.pat_ssn,
+            pat_referred_by: req.body.pat_referred_by,
+            emergency_firstName: req.body.emergency_firstName,
+            emergency_lastName: req.body.emergency_lastName,
+            emergency_phone_cell: req.body.emergency_phone_cell,
+            insurance: req.body.insurance,
+            employer: req.body.employer,
+        });
+
+        if (!errors.isEmpty()) {
+            //There are errors
+
+            async.parallel({
+                insurances: function(callback) {
+                    Insurance.find(callback);
+                },
+                employers: function(callback) {
+                    Employer.find(callback);
+                },
+            }, function(err, results) {
+                if (err) { return next(err); }
+
+                res.render('patient_form', { title: 'Update Patient Record', employers: results.employers, insurances: results.insurances, patient: patient, errors: errors.array() });
+            });
+            return;
+        } else {
+            Patient.findByIdAndUpdate(req.params.id, patient, {}, function(err, thepatient) {
+                if (err) { return next(err); }
+                //Successful - redirect to patient details
+                res.redirect(thepatient.url);
+            });
+        }
+    }
+];
