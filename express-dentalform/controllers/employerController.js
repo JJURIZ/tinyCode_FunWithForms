@@ -4,6 +4,8 @@ let Patient = require('../models/patient');
 const mongoose = require('mongoose');
 let async = require('async');
 const validator = require('express-validator');
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
 
 //Display list of all employers.
 exports.employer_list = function(req, res) {
@@ -143,10 +145,64 @@ exports.employer_delete_post = function(req, res, next) {
 
 //Display Employer update form on GET.
 exports.employer_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED:Employer update GET');
+    async.parallel({
+        employer: function(callback) {
+            Employer.findById(req.params.id).exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.employer == null) {
+            let err = new Error('Employer not found');
+            err.status = 404;
+            return next(err)
+        }
+        res.render('employer_form', { title: 'Update Employer', employer: results.employer })
+    });
 };
 
 //Handle Employer update on POST.
-exports.employer_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Employer update POST');
-};
+exports.employer_update_post = [
+
+    //Vaidate that the required fields are not empty
+    body('employer_name', 'Employer name required').trim().isLength({ min: 1 }),
+
+    //Sanitize (escape) required fields.
+    sanitizeBody('*').escape(),
+
+    //Process request after validation and sanitization
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        const employer = new Employer({
+            employer_name: req.body.employer_name,
+            employer_address1: req.body.employer_address1,
+            employer_address2: req.body.employer_address2,
+            employer_city: req.body.employer_city,
+            employer_state: req.body.employer_state,
+            employer_zip: req.body.employer_zip,
+            employer_phone: req.body.employer_phone,
+            _id: req.params.id
+        });
+
+        if (!errors.isEmpty()) {
+            //There are errors
+
+            async.parallel({
+                employer: function(callback) {
+                    Employer.find(callback);
+                },
+            }, function(err, results) {
+                if (err) { return next(err); }
+
+                res.render('employer_form', { title: 'Update Employer', employer: results.employer, errors: errors.array() })
+            });
+            return;
+        } else {
+            Employer.findByIdAndUpdate(req.params.id, employer, {}, function(err, theemployer) {
+                if (err) { return next(err); }
+                //Successful - redirect to insurance details
+                res.redirect(theemployer.url);
+            });
+        }
+    }
+];

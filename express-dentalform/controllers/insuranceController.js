@@ -181,7 +181,8 @@ exports.insurance_update_post = [
             ins_co_city: req.body.ins_co_city,
             ins_co_state: req.body.ins_co_state,
             ins_co_zip: req.body.ins_co_zip,
-            ins_co_phone: req.body.ins_co_phone
+            ins_co_phone: req.body.ins_co_phone,
+            _id: req.params.id
         });
 
         if (!errors.isEmpty()) {
