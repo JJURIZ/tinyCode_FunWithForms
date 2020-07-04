@@ -204,7 +204,6 @@ exports.patient_update_get = function(req, res, next) {
 
 //Handle Patient update on POST.
 exports.patient_update_post = [
-
     //Validate fields
     body('pat_firstName').isLength({ min: 1 }).trim().withMessage('First name required').isAlphanumeric().withMessage('First name must contain only letters'),
     body('pat_lastName').isLength({ min: 1 }).trim().withMessage('Last name required').isAlphanumeric().withMessage('Last name must contain only letters'),
@@ -216,10 +215,10 @@ exports.patient_update_post = [
 
     //Process request after validation and sanitization
     (req, res, next) => {
-        const errors = validationResults(req);
+        const errors = validationResult(req);
 
         //Create a Patient object with escaped/trimmed data and old id
-        const patient = new Patient({
+        let patient = new Patient({
             pat_lastName: req.body.pat_lastName,
             pat_address1: req.body.pat_address1,
             pat_address2: req.body.pat_address2,
@@ -239,11 +238,11 @@ exports.patient_update_post = [
             emergency_phone_cell: req.body.emergency_phone_cell,
             insurance: req.body.insurance,
             employer: req.body.employer,
+            _id: req.params.id
         });
 
         if (!errors.isEmpty()) {
             //There are errors
-
             async.parallel({
                 insurances: function(callback) {
                     Insurance.find(callback);
@@ -258,6 +257,7 @@ exports.patient_update_post = [
             });
             return;
         } else {
+            //Patient data from form is valid. Update the record.
             Patient.findByIdAndUpdate(req.params.id, patient, {}, function(err, thepatient) {
                 if (err) { return next(err); }
                 //Successful - redirect to patient details

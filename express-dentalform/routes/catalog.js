@@ -27,7 +27,7 @@ router.post('/patient/:id/delete', patient_controller.patient_delete_post);
 router.get('/patient/:id/update', patient_controller.patient_update_get);
 
 //POST request to update a Patient
-router.get('/patient/:id/update', patient_controller.patient_update_post);
+router.post('/patient/:id/update', patient_controller.patient_update_post);
 
 //GET request for one Patient
 router.get('/patient/:id/', patient_controller.patient_detail);
@@ -56,7 +56,7 @@ router.post('/insurance/:id/delete', insurance_controller.insurance_delete_post)
 router.get('/insurance/:id/update', insurance_controller.insurance_update_get);
 
 //POST request to update a Insurance
-router.get('/insurance/:id/update', insurance_controller.insurance_update_post);
+router.post('/insurance/:id/update', insurance_controller.insurance_update_post);
 
 //GET request for one Insurance
 router.get('/insurance/:id/', insurance_controller.insurance_detail);
@@ -85,7 +85,7 @@ router.post('/employer/:id/delete', employer_controller.employer_delete_post);
 router.get('/employer/:id/update', employer_controller.employer_update_get);
 
 //POST request to update a Employer
-router.get('/employer/:id/update', employer_controller.employer_update_post);
+router.post('/employer/:id/update', employer_controller.employer_update_post);
 
 //GET request for one Employer
 router.get('/employer/:id/', employer_controller.employer_detail);

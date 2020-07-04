@@ -4,6 +4,8 @@ let Patient = require('../models/patient');
 const mongoose = require('mongoose');
 const async = require('async');
 const validator = require('express-validator');
+const { body } = require('express-validator');
+const { sanitizeBody } = require('express-validator/filter');
 
 //Display list of all patients.
 exports.insurance_list = function(req, res) {
@@ -142,11 +144,65 @@ exports.insurance_delete_post = function(req, res, next) {
 };
 
 //Display Patient update form on GET.
-exports.insurance_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED:Insurance update GET');
+exports.insurance_update_get = function(req, res, next) {
+
+    async.parallel({
+        insurance: function(callback) {
+            Insurance.findById(req.params.id).exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.insurance == null) {
+            let err = new Error('Insurance Company not found');
+            err.status = 404;
+            return next(err)
+        }
+        res.render('insurance_form', { title: 'Update Insurance Company', insurance: results.insurance })
+    });
 };
 
 //Handle Patient update on POST.
-exports.insurance_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Insurance update POST');
-};
+exports.insurance_update_post = [
+
+    //Vaidate that the required fields are not empty
+    body('ins_co_name', 'Insurance Company name required').trim().isLength({ min: 1 }),
+
+    //Sanitize (escape) required fields.
+    sanitizeBody('*').escape(),
+
+    //Process request after validation and sanitization
+    (req, res, next) => {
+        const errors = validationResults(req);
+
+        const insurance = new Insurance({
+            ins_co_name: req.body.ins_co_name,
+            ins_co_address1: req.body.ins_co_address1,
+            ins_co_address2: req.body.ins_co_address2,
+            ins_co_city: req.body.ins_co_city,
+            ins_co_state: req.body.ins_co_state,
+            ins_co_zip: req.body.ins_co_zip,
+            ins_co_phone: req.body.ins_co_phone
+        });
+
+        if (!errors.isEmpty()) {
+            //There are errors
+
+            async.parallel({
+                insurance: function(callback) {
+                    Insurance.find(callback);
+                },
+            }, function(err, results) {
+                if (err) { return next(err); }
+
+                res.render('insurance_form', { title: 'Update Insurance Company', insurance: results.insurance, errors: errors.array() })
+            });
+            return;
+        } else {
+            Insurance.findByIdAndUpdate(req.params.id, insurance, {}, function(err, theinsurance) {
+                if (err) { return next(err); }
+                //Successful - redirect to insurance details
+                res.redirect(theinsurance.url);
+            });
+        }
+    }
+];
