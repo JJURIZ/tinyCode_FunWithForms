@@ -12,3 +12,17 @@ a {
     padding: 0;
     list-style: none,
 }
+
+ul li {
+    list-style: none;
+    font-size: medium;
+    padding: 2px 0 2px 0;
+}
+
+footer .container {
+    padding-top: 60px;
+}
+
+.jumbotron {
+    border-radius: 5px;
+}
