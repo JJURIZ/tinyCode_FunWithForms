@@ -2,7 +2,7 @@
 Project using Express.js - Learning about HTML Forms. Take 2.
 
 Project origin was simply to learn more about HTML Forms.
-This soon turned into a full Express.js app, using MDN's fantastic Express Tutorial.
+This soon turned into a full Node.js/Express app. MDN's fantastic Express Tutorial was indispensable.
 Rather than copy/paste or type in their example, I chose to modify it by creating a dental intake form.
 
 Prior to creating the environment I created a basic HTML intake form. 
