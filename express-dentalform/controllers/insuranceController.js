@@ -3,9 +3,7 @@ let Patient = require('../models/patient');
 
 const mongoose = require('mongoose');
 const async = require('async');
-const validator = require('express-validator');
-const { body } = require('express-validator');
-const { sanitizeBody } = require('express-validator/filter');
+const { body, validationResult } = require('express-validator');
 
 //Display list of all patients.
 exports.insurance_list = function(req, res) {
@@ -47,16 +45,16 @@ exports.insurance_detail = function(req, res, next) {
 //Handle Insurance create on POST.
 exports.insurance_create_post = [
     //Vaidate that the required fields are not empty
-    validator.body('ins_co_name', 'Insurance Company name required').trim().isLength({ min: 1 }),
+    body('ins_co_name', 'Insurance Company name required').trim().isLength({ min: 1 }),
 
     //Sanitize (escape) required fields.
-    validator.sanitizeBody('ins_co_name').escape(),
+    body('ins_co_name').escape(),
 
     //Process request after validation and sanitization
     (req, res, next) => {
 
         //Extract the validation errors from a request
-        const errors = validator.validationResult(req);
+        const errors = validationResult(req);
 
         //Create an insurance company with escaped and trimmed data
         let insurance = new Insurance({
@@ -168,11 +166,11 @@ exports.insurance_update_post = [
     body('ins_co_name', 'Insurance Company name required').trim().isLength({ min: 1 }),
 
     //Sanitize (escape) required fields.
-    sanitizeBody('*').escape(),
+    body('*').escape(),
 
     //Process request after validation and sanitization
     (req, res, next) => {
-        const errors = validationResults(req);
+        const errors = validationResult(req);
 
         const insurance = new Insurance({
             ins_co_name: req.body.ins_co_name,

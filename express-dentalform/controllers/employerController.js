@@ -3,9 +3,7 @@ let Patient = require('../models/patient');
 
 const mongoose = require('mongoose');
 let async = require('async');
-const validator = require('express-validator');
-const { body, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body, validationResult } = require('express-validator');
 
 //Display list of all employers.
 exports.employer_list = function(req, res) {
@@ -50,16 +48,16 @@ exports.employer_create_get = function(req, res, next) {
 exports.employer_create_post = [
 
     //Validate that the name field is not empty.
-    validator.body('employer_name', 'Employer Name is required').trim().isLength({ min: 1 }),
+    body('employer_name', 'Employer Name is required').trim().isLength({ min: 1 }),
 
     //Sanitize (escape) the name field.
-    validator.sanitizeBody('employer_name').escape(),
+    body('employer_name').escape(),
 
     //Process request after validation and sanitization.
     (req, res, next) => {
 
         //Extract the validation errors from a request.
-        const errors = validator.validationResult(req);
+        const errors = validationResult(req);
 
         //Create an employer object with escaped and trimmed data.
         let employer = new Employer({
@@ -167,7 +165,7 @@ exports.employer_update_post = [
     body('employer_name', 'Employer name required').trim().isLength({ min: 1 }),
 
     //Sanitize (escape) required fields.
-    sanitizeBody('*').escape(),
+    body('*').escape(),
 
     //Process request after validation and sanitization
     (req, res, next) => {

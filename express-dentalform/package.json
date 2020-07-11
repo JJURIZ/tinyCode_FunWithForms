@@ -2,7 +2,11 @@
     "name": "express-dentalform",
     "version": "0.0.0",
     "private": true,
+    "engines": {
+        "node": "14.x"
+    },
     "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node ./bin/www",
         "devstart": "nodemon ./bin/www",
         "serverstart": "SET DEBUG=express-dentalform:* & npm devstart "
@@ -19,6 +23,11 @@
         "morgan": "~1.9.1",
         "pug": "^3.0.0"
     },
+    "keywords": [
+        "node",
+        "heroku",
+        "express"
+    ],
     "devDependencies": {
         "nodemon": "^2.0.4"
     }

@@ -6,9 +6,7 @@ let async = require('async');
 let mongoose = require('mongoose');
 
 
-const { body, validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
-const { findById, findByIdAndUpdate } = require('../models/patient');
+const { body, validationResult } = require('express-validator');
 
 exports.index = function(req, res) {
     async.parallel({
@@ -89,8 +87,8 @@ exports.patient_create_post = [
     // body('pat_birthDate').isISO8601(),
     //Sanitize all fields
 
-    sanitizeBody('*').escape(),
-    sanitizeBody('pat_birthDate').toDate(),
+    body('*').escape(),
+    body('pat_birthDate').toDate(),
 
     //Process request after validation and sanitization
     (req, res, next) => {
@@ -210,8 +208,8 @@ exports.patient_update_post = [
     body('pat_email').trim().isEmail().withMessage('Must be proper email format i.e. "someone@somewhere.com'),
     //Sanitize all fields
 
-    sanitizeBody('*').escape(),
-    sanitizeBody('pat_birthDate').toDate(),
+    body('*').escape(),
+    body('pat_birthDate').toDate(),
 
     //Process request after validation and sanitization
     (req, res, next) => {
