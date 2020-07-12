@@ -1,13 +1,13 @@
 {
     "name": "express-dentalform",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "private": true,
     "engines": {
         "node": "14.x"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node ./bin/www",
+        "start": "node index.js",
         "devstart": "nodemon ./bin/www",
         "serverstart": "SET DEBUG=express-dentalform:* & npm devstart "
     },
