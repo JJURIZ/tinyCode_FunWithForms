@@ -4,15 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./index');
+var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var catalogRouter = require('./routes/catalog');
+const compression = require('compression');
+const helmet = require('helmet');
 
 var app = express();
 
 // Setup mongoose connection
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://jjuriz:VX9tk*FwdK5n@cluster0-m2hdz.azure.mongodb.net/<dbname>?retryWrites=true&w=majority';
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
+const dev_db_url = 'mongodb+srv://jjuriz:VX9tk*FwdK5n@cluster0-m2hdz.azure.mongodb.net/<dbname>?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
@@ -26,6 +29,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression()); //compress all routes
+app.use(helmet());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
