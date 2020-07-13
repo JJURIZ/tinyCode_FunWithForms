@@ -7,16 +7,18 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node index.js",
+        "start": "node ./bin/www",
         "devstart": "nodemon ./bin/www",
         "serverstart": "SET DEBUG=express-dentalform:* & npm devstart "
     },
     "dependencies": {
         "async": "^3.2.0",
+        "compression": "^1.7.4",
         "cookie-parser": "~1.4.4",
         "debug": "~2.6.9",
         "express": "~4.16.1",
         "express-validator": "^6.6.0",
+        "helmet": "^3.23.3",
         "http-errors": "~1.6.3",
         "moment": "^2.27.0",
         "mongoose": "^5.9.20",
