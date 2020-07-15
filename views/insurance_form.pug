@@ -4,25 +4,31 @@ block content
   h1 #{title}
 
   form(method='POST' action='')
-    div.form-group
+
+    div(class='form row')
+    div(class='form-group col-md-8')
       label(for='name') Insurance Company Name:
       input#name.form-control(type="text", name='ins_co_name', value=(undefined===insurance ? '' : insurance.ins_co_name))
-      br
+    div(class='form row')
+    div(class='form-group col-md-4')
       label(for='phone') Phone:
       input#name.form-control(type="text", name='ins_co_phone', value=(undefined===insurance ? '' : insurance.ins_co_phone))
-      br
+    div(class='form row')
+    div(class='form-group col-md-8')
       label(for='address1') Address Line 1:
       input#name.form-control(type="text", name='ins_co_address1', value=(undefined===insurance ? '' : insurance.ins_co_address1))
-      br
+    div(class='form row')
+    div(class='form-group col-md-8')
       label(for='address2') Address Line 2:
       input#name.form-control(type="text", name='ins_co_address2', value=(undefined===insurance ? '' : insurance.ins_co_address2))
-      br
+    div(class='form row')
+    div(class='form-group col-md-6')
       label(for='city') City:
       input#name.form-control(type="text", name='ins_co_city', value=(undefined===insurance ? '' : insurance.ins_co_city))
-      br
+    div(class='form-group col-md-4')
       label(for='state') State:
       input#name.form-control(type="text", name='ins_co_state', value=(undefined===insurance ? '' : insurance.ins_co_state))
-      br
+    div(class='form-group col-md-2')
       label(for='zip') Zip:
       input#name.form-control(type="text", name='ins_co_zip', value=(undefined===insurance ? '' : insurance.ins_co_zip))
       br
