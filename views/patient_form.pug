@@ -40,17 +40,18 @@ block content
     div(class='form-group row')
       h2 Address
       div(class='form row')
-      div(class='form-group col-md-8')
+      div(class='form-group col-md-6')
         label(for='pat_address1') Address Line 1:
         input#pat_address1.form-control(type='text', name='pat_address1', value=(undefined===patient ? '' : patient.pat_address1 ) )
       div(class='form row')
-      div(class='form-group col-md-8')
+      div(class='form-group col-md-6')
         label(for='pat_address2') Address Line 2:
         input#pat_address2.form-control(type='text', name='pat_address2', value=(undefined===patient ? '' : patient.pat_address2 ) )
       div(class='form row')
       div(class='form-group col-md-6')
         label(for='pat_city') City:
         input#pat_city.form-control(type='text', name='pat_city', value=(undefined===patient ? '' : patient.pat_city ) )
+      div(class='form row')
       div(class='form-group col-md-4')
         label(for='pat_state') State:
         input#pat_state.form-control(type='text', name='pat_state', value=(undefined===patient ? '' : patient.pat_state ) )
@@ -102,14 +103,16 @@ block content
       div(class='form-group col-md-6')
         label(for='emergency_firstName') First Name:
         input#emergency_firstName.form-control(type='text', name='emergency_firstName', value=(undefined===patient ? '' : patient.emergency_firstName ) )
+      div(class='form row')
       div(class='form-group col-md-6')
         label(for='emergency_lastName') Last Name:
         input#emergency_lastName.form-control(type='text', name='emergency_lastName', value=(undefined===patient ? '' : patient.emergency_lastName ) )
-      div(class='form-row')
+      div(class='form row')
       div(class='form-group col-md-6')
         label(for='emergency_phone_cell') Cell Phone:
         input#emergency_phone_cell.form-control(type='text', name='emergency_phone_cell', value=(undefined===patient ? '' : patient.emergency_phone_cell ) )
-        br
+      div(class='form row')
+      div(class='form-group col-md-6')
         button.btn.btn-primary(type='submit') Submit
       
       if errors

@@ -24,5 +24,18 @@ footer .container {
 }
 
 .jumbotron {
+    background-image: url("../images/banner.jpg");
+    background-size: cover;
     border-radius: 5px;
+    color: white;
+    min-height: 500px;
+}
+
+.nav-link {
+    color: white;
+}
+
+#pageheadertext {
+    color: #0275d8;
+    padding-bottom: 3rem;
 }

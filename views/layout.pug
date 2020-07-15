@@ -10,25 +10,27 @@ html(lang='en')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     div(class='jumbotron jumbotron-fluid')
-      div(class='container')
-        h1(class='display-5 text-center') tinyCode_Patient Intake Form
-          hr(class='my-4')
-          p In which I create a prototype patient, insurance, and employer intake forms.
+
+    nav(class="navbar navbar-dark bg-primary")
+      div.container-fluid
+        div.navbar-header
+      div.collapse.navbar-collapse
+       
+        ul.navbar-nav.mr-auto
+          li.nav-item.navbar-text
+            a(class='nav-link' href='/catalog') Home
+          li.nav-item.navbar-text
+            a(class='nav-link' href='/catalog/patient') All Patients
+          li.nav-item.navbar-text
+            a(class='nav-link' href='/catalog/insurance') All Insurance Companies
+          li.nav-item.navbar-text
+            a(class='nav-link' href='/catalog/employer') All Employers
+
     div(class='container-fluid')
       div(class='row')
         div(class='col-sm-2')
           block sidebar
-            ul(class='sidebar-nav')
-              li 
-                a(href='/catalog') Home
-              li 
-                a(href='/catalog/patient') All Patients
-              li 
-                a(href='/catalog/insurance') All Insurance Companies
-              li 
-                a(href='/catalog/employer') All Employers
-              
-                hr
+            ul(class='sidebar-nav')  
               li 
                 a(href='/catalog/patient/create') Create new Patient
               li 
