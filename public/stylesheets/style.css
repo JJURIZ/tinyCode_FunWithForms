@@ -28,14 +28,23 @@ footer .container {
     background-size: cover;
     border-radius: 5px;
     color: white;
-    min-height: 500px;
+    min-height: 375px;
+    position: relative;
 }
 
 .nav-link {
     color: white;
 }
 
-#pageheadertext {
-    color: #0275d8;
-    padding-bottom: 3rem;
+.jumbotron h1 {
+    color: #00B7FF;
+    opacity: 0.75;
+    top: 50%;
+    left: 50%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
